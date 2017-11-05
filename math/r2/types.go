@@ -3,6 +3,7 @@ package r2
 import (
 	"fmt"
 	"math"
+	mymath "github.com/lkj01010/goutils/math"
 )
 
 type Vec struct {
@@ -27,19 +28,15 @@ func (v Vec) Dot(ov Vec) float64 { return v.X*ov.X + v.Y*ov.Y }
 // Cross returns the cross product of v and ov.
 func (v Vec) Cross(ov Vec) float64 { return v.X*ov.Y - v.Y*ov.X }
 
-// Norm returns the vector's norm.
-func (v Vec) Norm() float64 { return math.Hypot(v.X, v.Y) }
+// Norm returns the vector's Length.
+func (v Vec) Length() float64 { return math.Hypot(v.X, v.Y) }
 
 // Normalize returns a unit point in the same direction as v.
 func (v Vec) Normalize() Vec {
 	if v.X == 0 && v.Y == 0 {
 		return v
 	}
-	return v.Mul(1 / v.Norm())
-}
-
-func (v Vec) Length() float64 {
-	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+	return v.Mul(1 / v.Length())
 }
 
 func (v Vec) LengthSquared() float64 {
@@ -51,9 +48,17 @@ func (v *Vec) Scale(xf, yf float64) {
 	v.Y *= yf
 }
 
-func (v Vec) Equals(ov Vec) bool { return v.X == ov.X && v.Y == ov.Y }
+func (v Vec) Equals(ov Vec) bool {
+	return mymath.EqualFloat64(v.X, ov.X) && mymath.EqualFloat64(v.Y, ov.Y)
+	//return v.X == ov.X && v.Y == ov.Y
+}
 
 func (v Vec) String() string { return fmt.Sprintf("(%.12f, %.12f)", v.X, v.Y) }
+
+func (v Vec) AngleDeg() float64 {
+	angle := math.Atan2(v.Y, v.X)
+	return angle * mymath.Rad2Deg
+}
 
 //--------------------------------------------------
 
