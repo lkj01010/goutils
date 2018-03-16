@@ -23,12 +23,12 @@ const (
 
 var (
 	levels = map[int]string{
-		LevelDebug:   "DEBUG",
-		LevelInfo:    "INFO",
-		LevelWarning: "WARNING",
-		LevelError:   "ERROR",
-		LevelPanic:   "PANIC",
-		LevelFatal:   "FATAL",
+		LevelDebug:   "[D]",
+		LevelInfo:    "[I]",
+		LevelWarning: "[W]",
+		LevelError:   "[E]",
+		LevelPanic:   "[P]",
+		LevelFatal:   "[F]",
 	}
 )
 

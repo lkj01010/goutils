@@ -56,8 +56,22 @@ func (v Vec) Equals(ov Vec) bool {
 func (v Vec) String() string { return fmt.Sprintf("(%.12f, %.12f)", v.X, v.Y) }
 
 func (v Vec) AngleDeg() float64 {
-	angle := math.Atan2(v.Y, v.X)
-	return angle * mymath.Rad2Deg
+	angle := math.Atan2(v.Y, v.X) * mymath.Rad2Deg
+	if angle < 0 {
+		angle += 360
+	}
+	return angle
+}
+
+func (v Vec) AngleRad() float64 {
+	return math.Atan2(v.Y, v.X)
+}
+
+
+func NewVecDirFromAngleDeg(angleDeg float64) Vec {
+	x := math.Cos(angleDeg * mymath.Deg2Rad)
+	y := math.Sin(angleDeg * mymath.Deg2Rad)
+	return Vec{x, y}
 }
 
 //--------------------------------------------------
