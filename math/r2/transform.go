@@ -4,27 +4,32 @@ import "math"
 import mymath "github.com/lkj01010/goutils/math"
 
 /// Rotate a vector
-func VecRot(q Rot, v Vec) Vec {
+/*
+x = Rcos(b) ; y = Rsin(b);
+X = Rcos(a+b) = Rcosacosb - Rsinasinb = xcosa - ysina; (合角公式)
+Y = Rsin(a+b) = Rsinacosb + Rcosasinb = xsina + ycosa ;
+*/
+func VecRot(v Vec, q Rot) Vec {
 	return Vec{
-		q.C*v.X - q.S*v.Y,
-		q.S*v.X + q.C*v.Y,
+		v.X*q.C - v.Y*q.S,
+		v.X*q.S + v.Y*q.C,
 	}
 }
 
-func VecRotInverse(q Rot, v Vec) Vec {
+func VecRotInverse(v Vec, q Rot) Vec {
 	return Vec{
-		q.C*v.X + q.S*v.Y,
-		- q.S*v.X + q.C*v.Y,
+		v.X*q.C + v.Y*q.S,
+		- v.X*q.S + v.Y*q.C,
 	}
 }
 
-func VecTransform(t Transform, v Vec) Vec {
+func VecTransform(v Vec, t Transform) Vec {
 	x := (t.Q.C*v.X - t.Q.S*v.Y) + t.P.X;
 	y := (t.Q.S*v.X + t.Q.C*v.Y) + t.P.Y;
 	return Vec{x, y}
 }
 
-func VecTransformInverse(t Transform, v Vec) Vec {
+func VecTransformInverse(v Vec, t Transform) Vec {
 	px := v.X - t.P.X;
 	py := v.Y - t.P.Y;
 	x := t.Q.C*px + t.Q.S*py;
@@ -46,13 +51,13 @@ func RotRotInverse(q, r Rot) (qr Rot) {
 
 func TransformTransform(a Transform, b Transform) (c Transform) {
 	c.Q = RotRot(a.Q, b.Q)
-	c.P = VecRot(a.Q, b.P).Add(a.P)
+	c.P = VecRot(b.P, a.Q).Add(a.P)
 	return
 }
 
 func TransformTransformInverse(a Transform, b Transform) (c Transform) {
 	c.Q = RotRotInverse(a.Q, b.Q)
-	c.P = VecRotInverse(a.Q, b.P.Sub(a.P))
+	c.P = VecRotInverse(b.P.Sub(a.P), a.Q)
 	return
 }
 
