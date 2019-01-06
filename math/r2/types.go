@@ -80,12 +80,12 @@ type Rot struct {
 	S, C float64
 }
 
-func (r *Rot) Set(angle float64) {
-	r.S = math.Sin(angle)
-	r.C = math.Cos(angle)
+func (r *Rot) Set(angleRad float64) {
+	r.S = math.Sin(angleRad)
+	r.C = math.Cos(angleRad)
 }
 
-func (r Rot) GetAngle() float64 {
+func (r Rot) GetAngleRad() float64 {
 	return math.Atan2(r.S, r.C)
 }
 
@@ -96,7 +96,7 @@ type Transform struct {
 	Q Rot
 }
 
-func (t *Transform) Set(pos *Vec, angle float64) {
+func (t *Transform) Set(pos *Vec, angleRad float64) {
 	t.P = *pos
-	t.Q.Set(angle)
+	t.Q.Set(angleRad)
 }
