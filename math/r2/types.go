@@ -49,7 +49,7 @@ func (v *Vec) Scale(xf, yf float64) {
 }
 
 func (v Vec) Equals(ov Vec) bool {
-	return mymath.EqualFloat64(v.X, ov.X) && mymath.EqualFloat64(v.Y, ov.Y)
+	return mymath.IsApproximate(v.X, ov.X) && mymath.IsApproximate(v.Y, ov.Y)
 	//return v.X == ov.X && v.Y == ov.Y
 }
 
@@ -66,7 +66,6 @@ func (v Vec) AngleDeg() float64 {
 func (v Vec) AngleRad() float64 {
 	return math.Atan2(v.Y, v.X)
 }
-
 
 func NewVecDirFromAngleDeg(angleDeg float64) Vec {
 	x := math.Cos(angleDeg * mymath.Deg2Rad)

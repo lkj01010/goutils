@@ -1,5 +1,7 @@
 // Copyright 2015 Chen Xianren. All rights reserved.
 
+// https://studygolang.com/articles/2644
+
 package log
 
 import (
@@ -472,3 +474,4 @@ func Fatalln(v ...interface{}) {
 	std.Outputln(LevelFatal, 3, v...)
 	os.Exit(1)
 }
+
