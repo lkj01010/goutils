@@ -393,6 +393,7 @@ func ErrFatal(err error) {
 	}
 }
 
+// note: 这几个函数输出会被[]包住，原因是Sprint里判断是非string，是interface{}
 func Debug(v ...interface{}) {
 	std.Output(LevelDebug, 3, v...)
 }
@@ -408,6 +409,7 @@ func Warning(v ...interface{}) {
 func Error(v ...interface{}) {
 	std.Output(LevelError, 3, v...)
 }
+//]]
 
 func Panic(v ...interface{}) {
 	s := fmt.Sprint(v...)
