@@ -3,7 +3,7 @@ package r2
 import (
 	"fmt"
 	"math"
-	mymath "github.com/lkj01010/goutils/math"
+	"github.com/lkj01010/goutils/mathx"
 )
 
 type Vec struct {
@@ -49,14 +49,14 @@ func (v *Vec) Scale(xf, yf float64) {
 }
 
 func (v Vec) Equals(ov Vec) bool {
-	return mymath.IsApproximate(v.X, ov.X) && mymath.IsApproximate(v.Y, ov.Y)
+	return mathx.IsApproximate(v.X, ov.X) && mathx.IsApproximate(v.Y, ov.Y)
 	//return v.X == ov.X && v.Y == ov.Y
 }
 
 func (v Vec) String() string { return fmt.Sprintf("(%.12f, %.12f)", v.X, v.Y) }
 
 func (v Vec) AngleDeg() float64 {
-	angle := math.Atan2(v.Y, v.X) * mymath.Rad2Deg
+	angle := math.Atan2(v.Y, v.X) * mathx.Rad2Deg
 	if angle < 0 {
 		angle += 360
 	}
@@ -68,8 +68,8 @@ func (v Vec) AngleRad() float64 {
 }
 
 func NewVecDirFromAngleDeg(angleDeg float64) Vec {
-	x := math.Cos(angleDeg * mymath.Deg2Rad)
-	y := math.Sin(angleDeg * mymath.Deg2Rad)
+	x := math.Cos(angleDeg * mathx.Deg2Rad)
+	y := math.Sin(angleDeg * mathx.Deg2Rad)
 	return Vec{x, y}
 }
 

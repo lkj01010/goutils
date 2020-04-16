@@ -1,7 +1,7 @@
 package r2
 
 import "math"
-import mymath "github.com/lkj01010/goutils/math"
+import "github.com/lkj01010/goutils/mathx"
 
 /// Rotate a vector
 /*
@@ -63,6 +63,6 @@ func TransformTransformInverse(a Transform, b Transform) (c Transform) {
 
 func AngleBetweenVec(from Vec, to Vec) float64 {
 	cosValue := from.Dot(to) / (from.Length() * to.Length())
-	cosValue = mymath.ClampFloat64(cosValue, -1, 1)
+	cosValue = mathx.ClampFloat64(cosValue, -1, 1)
 	return math.Acos(cosValue)
 }

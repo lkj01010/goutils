@@ -1,4 +1,4 @@
-package math
+package mathx
 import (
 	"bytes"
 //	"github.com/lkj01010/log"
