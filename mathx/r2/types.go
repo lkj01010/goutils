@@ -49,7 +49,7 @@ func (v *Vec) Scale(xf, yf float64) {
 }
 
 func (v Vec) Equals(ov Vec) bool {
-	return mathx.IsApproximate(v.X, ov.X) && mathx.IsApproximate(v.Y, ov.Y)
+	return mathx.IsEqual(v.X, ov.X) && mathx.IsEqual(v.Y, ov.Y)
 	//return v.X == ov.X && v.Y == ov.Y
 }
 
