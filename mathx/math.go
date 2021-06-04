@@ -26,20 +26,19 @@ func ClampInt32(value, min, max int32) int32 {
 
 //func IsApproximate(a, b float64) bool {
 func IsEqual(a, b float64) bool {
-	return math.Abs(a - b) <= KAccuracy
+	return math.Abs(a-b) <= KAccuracy
 }
 
 func NotEqual(a, b float64) bool {
-	return math.Abs(a - b) > KAccuracy
+	return math.Abs(a-b) > KAccuracy
 }
 
-
 func IsBigger(a, b float64) bool {
-	return a - b > KAccuracy
+	return a-b > KAccuracy
 }
 
 func IsSmaller(a, b float64) bool {
-	return b - a > KAccuracy
+	return b-a > KAccuracy
 }
 
 // >=
@@ -60,6 +59,11 @@ func CeilInt(v float64) int {
 	return int(math.Ceil(v) + KAccuracy)
 }
 
+// std:lerp, unity use "t"
+func Lerp(a, b, t float64) float64 {
+	return a + (b-a)*t
+}
+
 func LerpIndex(fIndex float64) (int, int, float64) {
 	left := math.Floor(fIndex)
 	if IsEqual(left, fIndex) {
@@ -72,10 +76,10 @@ func LerpIndex(fIndex float64) (int, int, float64) {
 }
 
 func FloatInsect(a1, a2, b1, b2 float64) bool {
-    if a1 > a2 {
-    	t := a1
-    	a1 = a2
-    	a2 = t
+	if a1 > a2 {
+		t := a1
+		a1 = a2
+		a2 = t
 	}
 	if b1 > b2 {
 		t := b1
@@ -93,7 +97,7 @@ func QuickDistance2D64(x, y float64) float64 {
 	min := math.Min(x, y)
 	max := math.Max(x, y)
 	m := min / max
-	q := m * m * 0.37 + 0.05 * m
-	dist := max + max * q
+	q := m*m*0.37 + 0.05*m
+	dist := max + max*q
 	return dist
 }
