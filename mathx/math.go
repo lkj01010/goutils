@@ -1,6 +1,9 @@
 package mathx
 
-import "math"
+import (
+	"math"
+	"math/rand"
+)
 
 const KAccuracy float64 = 0.0000001
 
@@ -73,6 +76,16 @@ func LerpIndex(fIndex float64) (int, int, float64) {
 		percent := (fIndex - left) / (right - left)
 		return int(left), int(right), percent
 	}
+}
+
+func RandUnit() float64 {
+	r := rand.Intn(100)
+	t := float64(r) / 100
+	return t
+}
+
+func RandUnitWiggle() float64 {
+	return RandUnit() - 0.5
 }
 
 func FloatInsect(a1, a2, b1, b2 float64) bool {
