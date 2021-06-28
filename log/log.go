@@ -536,3 +536,29 @@ func Fatalln(v ...interface{}) {
     std.Outputln(LevelFatal, 3, v...)
     os.Exit(1)
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+func Assert(cond bool, a ...interface{}) {
+    if !cond {
+        PanicDepth(4, a...)
+    }
+}
+
+func Assertf(cond bool, format string, a ...interface{}) {
+    if !cond {
+        PanicDepthf(4, format, a...)
+    }
+}
+
+func AssertDepth(callDepth int, cond bool, a ...interface{}) {
+    if !cond {
+        PanicDepth(callDepth, a...)
+    }
+}
+
+func AssertDepthf(callDepth int, cond bool, format string, a ...interface{}) {
+    if !cond {
+        PanicDepthf(callDepth, format, a...)
+    }
+}
