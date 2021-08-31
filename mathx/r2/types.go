@@ -2,12 +2,16 @@ package r2
 
 import (
 	"fmt"
-	"math"
 	"github.com/lkj01010/goutils/mathx"
+	"math"
 )
 
 type Vec struct {
 	X, Y float64
+}
+
+func Vec_Right() Vec {
+	return Vec{1, 0}
 }
 
 // Add returns the sum of v and ov.
@@ -67,10 +71,14 @@ func (v Vec) AngleRad() float64 {
 	return math.Atan2(v.Y, v.X)
 }
 
-func NewVecDirFromAngleDeg(angleDeg float64) Vec {
-	x := math.Cos(angleDeg * mathx.Deg2Rad)
-	y := math.Sin(angleDeg * mathx.Deg2Rad)
+func NewVecFromAngleRad(angleRad float64) Vec {
+	x := math.Cos(angleRad)
+	y := math.Sin(angleRad)
 	return Vec{x, y}
+}
+
+func NewVecFromAngleDeg(angleDeg float64) Vec {
+	return NewVecFromAngleRad(angleDeg * mathx.Deg2Rad)
 }
 
 //--------------------------------------------------
@@ -82,6 +90,12 @@ type Rot struct {
 func (r *Rot) Set(angleRad float64) {
 	r.S = math.Sin(angleRad)
 	r.C = math.Cos(angleRad)
+}
+
+func NewRot(angleRad float64) *Rot {
+	r := &Rot{}
+	r.Set(angleRad)
+	return r
 }
 
 func (r Rot) GetAngleRad() float64 {

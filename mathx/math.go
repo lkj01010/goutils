@@ -32,10 +32,6 @@ func IsEqual(a, b float64) bool {
 	return math.Abs(a-b) <= KAccuracy
 }
 
-func NotEqual(a, b float64) bool {
-	return math.Abs(a-b) > KAccuracy
-}
-
 func IsBigger(a, b float64) bool {
 	return a-b > KAccuracy
 }

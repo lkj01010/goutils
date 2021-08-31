@@ -122,79 +122,79 @@ func New(out io.Writer, prefix string, flag, level int) *Logger {
     }
 }
 
-func (self *Logger) Flags() int {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    return self.logger.Flags()
+func (l *Logger) Flags() int {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    return l.logger.Flags()
 }
 
-func (self *Logger) SetFlags(flag int) {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    self.logger.SetFlags(flag)
+func (l *Logger) SetFlags(flag int) {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    l.logger.SetFlags(flag)
 }
 
-func (self *Logger) Prefix() string {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    return self.logger.Prefix()
+func (l *Logger) Prefix() string {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    return l.logger.Prefix()
 }
 
-func (self *Logger) SetPrefix(prefix string) {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    self.logger.SetPrefix(prefix)
+func (l *Logger) SetPrefix(prefix string) {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    l.logger.SetPrefix(prefix)
 }
 
-func (self *Logger) Level() int {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    return self.level
+func (l *Logger) Level() int {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    return l.level
 }
 
-func (self *Logger) SetLevel(level int) {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    self.level = level
+func (l *Logger) SetLevel(level int) {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    l.level = level
 }
 
-func (self *Logger) Err(level, calldepth int, err error) error {
+func (l *Logger) Err(level, calldepth int, err error) error {
     if err != nil {
-        self.mu.Lock()
-        defer self.mu.Unlock()
-        if level >= self.level {
-            return self.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), err))
+        l.mu.Lock()
+        defer l.mu.Unlock()
+        if level >= l.level {
+            return l.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), err))
         }
     }
     return nil
 }
 
-func (self *Logger) ErrDebug(err error) {
-    self.Err(LevelDebug, 3, err)
+func (l *Logger) ErrDebug(err error) {
+    l.Err(LevelDebug, 3, err)
 }
 
-func (self *Logger) ErrInfo(err error) {
-    self.Err(LevelInfo, 3, err)
+func (l *Logger) ErrInfo(err error) {
+    l.Err(LevelInfo, 3, err)
 }
 
-func (self *Logger) ErrWarning(err error) {
-    self.Err(LevelWarning, 3, err)
+func (l *Logger) ErrWarning(err error) {
+    l.Err(LevelWarning, 3, err)
 }
 
-func (self *Logger) ErrError(err error) {
-    self.Err(LevelError, 3, err)
+func (l *Logger) ErrError(err error) {
+    l.Err(LevelError, 3, err)
 }
 
-func (self *Logger) ErrPanic(err error) {
+func (l *Logger) ErrPanic(err error) {
     if err != nil {
-        self.Err(LevelPanic, 3, err)
+        l.Err(LevelPanic, 3, err)
         panic(err)
     }
 }
 
-func (self *Logger) ErrFatal(err error) {
+func (l *Logger) ErrFatal(err error) {
     if err != nil {
-        self.Err(LevelFatal, 3, err)
+        l.Err(LevelFatal, 3, err)
         os.Exit(1)
     }
 }
@@ -208,11 +208,11 @@ func formatOutput(level int, v ...interface{}) string {
         levelColorSuffix())
 }
 
-func (self *Logger) Output(level, calldepth int, v ...interface{}) error {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    if level >= self.level {
-        return self.logger.Output(calldepth,
+func (l *Logger) Output(level, calldepth int, v ...interface{}) error {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    if level >= l.level {
+        return l.logger.Output(calldepth,
             formatOutput(level, v),
         )
     }
@@ -220,14 +220,14 @@ func (self *Logger) Output(level, calldepth int, v ...interface{}) error {
 }
 
 // todo: 2020/03/12 error 存入文档
-func (self *Logger) Outputf(level, calldepth int, format string, v ...interface{}) error {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    if level >= self.level {
+func (l *Logger) Outputf(level, calldepth int, format string, v ...interface{}) error {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    if level >= l.level {
         //lkj modify:
-        //		return self.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), fmt.Sprintf(format, v...)))
+        //		return l.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), fmt.Sprintf(format, v...)))
         //-->
-        return self.logger.Output(calldepth,
+        return l.logger.Output(calldepth,
             formatOutput(level, fmt.Sprintf(format, v...)),
         )
         //]]
@@ -235,15 +235,15 @@ func (self *Logger) Outputf(level, calldepth int, format string, v ...interface{
     return nil
 }
 
-func (self *Logger) Outputln(level, calldepth int, v ...interface{}) error {
-    self.mu.Lock()
-    defer self.mu.Unlock()
-    if level >= self.level {
+func (l *Logger) Outputln(level, calldepth int, v ...interface{}) error {
+    l.mu.Lock()
+    defer l.mu.Unlock()
+    if level >= l.level {
         s := fmt.Sprintln(v...)
         s = s[:len(s)-1]
-        //		return self.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), s))
+        //		return l.logger.Output(calldepth, fmt.Sprintf("%s: %s", LevelName(level), s))
         //-->
-        return self.logger.Output(calldepth,
+        return l.logger.Output(calldepth,
             formatOutput(level, s),
         )
         //]]
@@ -251,85 +251,85 @@ func (self *Logger) Outputln(level, calldepth int, v ...interface{}) error {
     return nil
 }
 
-func (self *Logger) Debug(v ...interface{}) {
-    self.Output(LevelDebug, 3, v...)
+func (l *Logger) Debug(v ...interface{}) {
+    l.Output(LevelDebug, 3, v...)
 }
 
-func (self *Logger) Info(v ...interface{}) {
-    self.Output(LevelInfo, 3, v...)
+func (l *Logger) Info(v ...interface{}) {
+    l.Output(LevelInfo, 3, v...)
 }
 
-func (self *Logger) Warning(v ...interface{}) {
-    self.Output(LevelWarning, 3, v...)
+func (l *Logger) Warning(v ...interface{}) {
+    l.Output(LevelWarning, 3, v...)
 }
 
-func (self *Logger) Error(v ...interface{}) {
-    self.Output(LevelError, 3, v...)
+func (l *Logger) Error(v ...interface{}) {
+    l.Output(LevelError, 3, v...)
 }
 
-func (self *Logger) Panic(v ...interface{}) {
+func (l *Logger) Panic(v ...interface{}) {
     s := fmt.Sprint(v...)
-    self.Output(LevelPanic, 3, s)
+    l.Output(LevelPanic, 3, s)
     panic(s)
 }
 
-func (self *Logger) Fatal(v ...interface{}) {
-    self.Output(LevelFatal, 3, v...)
+func (l *Logger) Fatal(v ...interface{}) {
+    l.Output(LevelFatal, 3, v...)
     os.Exit(1)
 }
 
-func (self *Logger) Debugf(format string, v ...interface{}) {
-    self.Outputf(LevelDebug, 3, format, v...)
+func (l *Logger) Debugf(format string, v ...interface{}) {
+    l.Outputf(LevelDebug, 3, format, v...)
 }
 
-func (self *Logger) Infof(format string, v ...interface{}) {
-    self.Outputf(LevelInfo, 3, format, v...)
+func (l *Logger) Infof(format string, v ...interface{}) {
+    l.Outputf(LevelInfo, 3, format, v...)
 }
 
-func (self *Logger) Warningf(format string, v ...interface{}) {
-    self.Outputf(LevelWarning, 3, format, v...)
+func (l *Logger) Warningf(format string, v ...interface{}) {
+    l.Outputf(LevelWarning, 3, format, v...)
 }
 
-func (self *Logger) Errorf(format string, v ...interface{}) {
-    self.Outputf(LevelError, 3, format, v...)
+func (l *Logger) Errorf(format string, v ...interface{}) {
+    l.Outputf(LevelError, 3, format, v...)
 }
 
-func (self *Logger) Panicf(format string, v ...interface{}) {
+func (l *Logger) Panicf(format string, v ...interface{}) {
     s := fmt.Sprintf(format, v...)
-    self.Outputf(LevelPanic, 3, "%s", s)
+    l.Outputf(LevelPanic, 3, "%s", s)
     panic(s)
 }
 
-func (self *Logger) Fatalf(format string, v ...interface{}) {
-    self.Outputf(LevelFatal, 3, format, v...)
+func (l *Logger) Fatalf(format string, v ...interface{}) {
+    l.Outputf(LevelFatal, 3, format, v...)
     os.Exit(1)
 }
 
-func (self *Logger) Debugln(v ...interface{}) {
-    self.Outputln(LevelDebug, 3, v...)
+func (l *Logger) Debugln(v ...interface{}) {
+    l.Outputln(LevelDebug, 3, v...)
 }
 
-func (self *Logger) Infoln(v ...interface{}) {
-    self.Outputln(LevelInfo, 3, v...)
+func (l *Logger) Infoln(v ...interface{}) {
+    l.Outputln(LevelInfo, 3, v...)
 }
 
-func (self *Logger) Warningln(v ...interface{}) {
-    self.Outputln(LevelWarning, 3, v...)
+func (l *Logger) Warningln(v ...interface{}) {
+    l.Outputln(LevelWarning, 3, v...)
 }
 
-func (self *Logger) Errorln(v ...interface{}) {
-    self.Outputln(LevelError, 3, v...)
+func (l *Logger) Errorln(v ...interface{}) {
+    l.Outputln(LevelError, 3, v...)
 }
 
-func (self *Logger) Panicln(v ...interface{}) {
+func (l *Logger) Panicln(v ...interface{}) {
     s := fmt.Sprintln(v...)
     s = s[:len(s)-1]
-    self.Outputln(LevelPanic, 3, s)
+    l.Outputln(LevelPanic, 3, s)
     panic(s)
 }
 
-func (self *Logger) Fatalln(v ...interface{}) {
-    self.Outputln(LevelFatal, 3, v...)
+func (l *Logger) Fatalln(v ...interface{}) {
+    l.Outputln(LevelFatal, 3, v...)
     os.Exit(1)
 }
 
