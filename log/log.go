@@ -9,6 +9,7 @@ import (
     "io"
     "log"
     "os"
+    "runtime"
     "strconv"
     "strings"
     "sync"
@@ -201,20 +202,38 @@ func (l *Logger) ErrFatal(err error) {
 
 //lkj add:
 func formatOutput(level int, v ...interface{}) string {
-    return fmt.Sprintf("%s%s: %s%s",
-        levelColorPrefix(level),
-        LevelName(level),
-        fmt.Sprint(v...),
-        levelColorSuffix())
+    if runtime.GOOS == "windows" {
+        return fmt.Sprintf("%s: %s",
+            LevelName(level),
+            fmt.Sprint(v...),
+        )
+    } else {
+        return fmt.Sprintf("%s%s: %s%s",
+            levelColorPrefix(level),
+            LevelName(level),
+            fmt.Sprint(v...),
+            levelColorSuffix())
+    }
 }
 
 func (l *Logger) Output(level, calldepth int, v ...interface{}) error {
     l.mu.Lock()
     defer l.mu.Unlock()
     if level >= l.level {
+
+        outString := formatOutput(level, v)
+
+        //if runtime.GOOS == "windows"{
+        //    h := colorLevelStart_win(level)
+        //    defer colorLevelEnd_win(h)
+        //    return l.logger.Output(calldepth,
+        //       outString,
+        //    )
+        //} else {
         return l.logger.Output(calldepth,
-            formatOutput(level, v),
+            outString,
         )
+        //}
     }
     return nil
 }
